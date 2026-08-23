@@ -1,0 +1,45 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 143df0a..a5aa16a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -21,6 +21,14 @@ if (SPIRV_REFLECT_ENABLE_ASAN)
+ endif()
+ 
+ if (SPIRV_REFLECT_EXECUTABLE)
++    if(MSVC OR CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
++        set(SPIRV_REFLECT_WARNING_FLAGS /W4)
++    elseif(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
++        set(SPIRV_REFLECT_WARNING_FLAGS -Wall -Wextra -Wpedantic)
++    else()
++        set(SPIRV_REFLECT_WARNING_FLAGS)
++    endif()
++
+     # ==========================================================================
+     # Compile spirv_reflect.c as C
+     # ==========================================================================
+@@ -33,11 +41,7 @@ if (SPIRV_REFLECT_EXECUTABLE)
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/examples/common.cpp
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/common/output_stream.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/common/output_stream.cpp)
+-    target_compile_options(spirv-reflect PRIVATE
+-        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+-        $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic -Werror>
+-        $<$<CXX_COMPILER_ID:Clang>:-Wall -Wextra -Wpedantic -Werror>
+-        $<$<CXX_COMPILER_ID:AppleClang>:-Wall -Wextra -Wpedantic -Werror>)
++    target_compile_options(spirv-reflect PRIVATE ${SPIRV_REFLECT_WARNING_FLAGS})
+     if (SPIRV_REFLECT_ENABLE_ASSERTS)
+         target_compile_definitions(spirv-reflect PRIVATE SPIRV_REFLECT_ENABLE_ASSERTS)
+     endif()
+@@ -64,11 +68,7 @@ if (SPIRV_REFLECT_EXECUTABLE)
+                                     ${CMAKE_CURRENT_SOURCE_DIR}/examples/common.cpp
+                                     ${CMAKE_CURRENT_SOURCE_DIR}/common/output_stream.h
+                                     ${CMAKE_CURRENT_SOURCE_DIR}/common/output_stream.cpp)
+-    target_compile_options(spirv-reflect-pp PRIVATE
+-        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+-        $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic -Werror>
+-        $<$<CXX_COMPILER_ID:Clang>:-Wall -Wextra -Wpedantic -Werror>
+-        $<$<CXX_COMPILER_ID:AppleClang>:-Wall -Wextra -Wpedantic -Werror>)
++    target_compile_options(spirv-reflect-pp PRIVATE ${SPIRV_REFLECT_WARNING_FLAGS})
+     if (SPIRV_REFLECT_ENABLE_ASSERTS)
+         target_compile_definitions(spirv-reflect-pp PRIVATE SPIRV_REFLECT_ENABLE_ASSERTS)
+     endif()
