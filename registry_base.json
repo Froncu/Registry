@@ -10,10 +10,10 @@
          "cacheVariables": {
             "VCPKG_MANIFEST_DIR": "${sourceDir}",
             "VCPKG_OVERLAY_PORTS": "${sourceDir}/registry/ports",
-            "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/registry/triplets",
-            "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/registry/scripts/clang.cmake",
-            "VCPKG_HOST_TRIPLET": "x64-clang",
-            "VCPKG_TARGET_TRIPLET": "x64-clang"
+            "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/registry/internal",
+            "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/registry/internal/llvm.cmake",
+            "VCPKG_HOST_TRIPLET": "triplet",
+            "VCPKG_TARGET_TRIPLET": "triplet"
          }
       }
    ]

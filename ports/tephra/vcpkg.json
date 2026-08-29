@@ -5,7 +5,8 @@
    "homepage": "https://github.com/froncu/tephra",
    "dependencies": [
       {
-         "name": "libxml2"
+         "name": "libxml2",
+         "default-features": false
       },
       {
          "name": "vcpkg-cmake",
