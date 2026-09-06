@@ -1,0 +1,34 @@
+﻿set(LLVM_REQUIRED_VERSION 23.1.0)
+
+if ($ENV{LLVM_ROOT} STREQUAL "")
+   message(FATAL_ERROR "LLVM_ROOT is not set. LLVM ${LLVM_REQUIRED_VERSION} is required!")
+endif ()
+
+cmake_path(CONVERT $ENV{LLVM_ROOT} TO_CMAKE_PATH_LIST LLVM_ROOT NORMALIZE)
+
+if (NOT IS_DIRECTORY ${LLVM_ROOT})
+   message(FATAL_ERROR "LLVM_ROOT is set to '${LLVM_ROOT}', but that directory does not exist!")
+endif ()
+
+set(LLVM_BIN ${LLVM_ROOT}/bin)
+
+if (CMAKE_HOST_WIN32)
+   set(CMAKE_C_COMPILER ${LLVM_BIN}/clang-cl.exe)
+   set(CMAKE_CXX_COMPILER ${LLVM_BIN}/clang-cl.exe)
+   set(LLVM_CONFIG ${LLVM_BIN}/llvm-config.exe)
+
+   if (NOT DEFINED VCPKG_TARGET_ARCHITECTURE OR NOT DEFINED VCPKG_CRT_LINKAGE)
+      set(CMAKE_RC_COMPILER ${LLVM_BIN}/llvm-rc.exe)
+   endif ()
+else ()
+   set(CMAKE_C_COMPILER ${LLVM_BIN}/clang)
+   set(CMAKE_CXX_COMPILER ${LLVM_BIN}/clang++)
+   set(LLVM_CONFIG ${LLVM_BIN}/llvm-config)
+endif ()
+
+execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_INSTALLED_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+if (NOT LLVM_INSTALLED_VERSION STREQUAL LLVM_REQUIRED_VERSION)
+   message(FATAL_ERROR "LLVM ${LLVM_REQUIRED_VERSION} is required, but ${LLVM_INSTALLED_VERSION} was found at ${LLVM_ROOT}!")
+endif ()
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../scripts)
