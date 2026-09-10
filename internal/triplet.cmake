@@ -9,8 +9,10 @@ if (HOST_SYSTEM_PROCESSOR MATCHES "^(amd64|x86_64)$")
 elseif (HOST_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
    set(VCPKG_TARGET_ARCHITECTURE arm64)
 else ()
-   message(FATAL_ERROR "'${CMAKE_HOST_SYSTEM_PROCESSOR}' is an unsupported host architecture!")
+   message(FATAL_ERROR "'${HOST_SYSTEM_PROCESSOR}' is an unsupported host architecture!")
 endif ()
+
+unset(HOST_SYSTEM_PROCESSOR)
 
 if (CMAKE_HOST_WIN32)
    set(VCPKG_LOAD_VCVARS_ENV ON)
