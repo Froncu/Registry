@@ -1,7 +1,7 @@
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL https://github.com/froncu/tephra.git
-    REF 8cf757e8441e745de80e2ed36a525de622dddc7e)
+    REF 85257af9a74ce33f4630d3afe0ca393c81742693)
 
 set(VCPKG_BUILD_TYPE release)
 vcpkg_cmake_configure(SOURCE_PATH ${SOURCE_PATH})
